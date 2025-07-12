@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My-Burger-App</title>
+  <link rel="stylesheet" href="src/output.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- Header -->
+  <div class="mb-6 bg-amber-600 p-6 font-extrabold flex items-center justify-center text-white text-4xl">
+    <h4>MY BURGER APP</h4>
+  </div>
+
+  <!-- Burger Button -->
+  <div
+    class="bg-amber-600 hover:bg-amber-500 text-white font-semibold w-40 h-13 flex items-center gap-1 justify-center mx-auto mb-5 rounded-xl cursor-pointer">
+    <img class="w-10 h-10" src="./Assets/Main.png" alt="" />
+    <h4>BURGER'S</h4>
+  </div>
+
+  <!-- Main Container -->
+  <div class="flex flex-col lg:flex-row justify-center items-start gap-5 px-5">
+
+    <!-- Burgers Section -->
+    <section class="bg-gray-400 w-full lg:w-[70%] h-[75vh] p-7 flex flex-wrap overflow-y-scroll rounded-xl shadow-md">
+
+      <!-- Burger Cards -->
+      <!-- You can repeat the below div as needed -->
+      <div class="Add_Cart w-full sm:w-65 h-60 bg-white m-3 flex flex-col p-3 rounded-xl">
+        <div>
+          <img class="image w-full h-36 object-cover rounded-lg" src="Assets/Burger.png" alt="">
+          <h3 class="name mt-2 text-lg font-bold">Salmon Burger</h3>
+        </div>
+        <div class="flex justify-between mt-3 items-center">
+          <h3 class="price text-green-600 font-semibold">$30</h3>
+          <i class=" add_btn fa-solid fa-cart-plus text-xl cursor-pointer text-amber-600"></i>
+        </div>
+      </div>
+
+      <!-- Repeat more cards as needed -->
+      <div class="Add_Cart w-full sm:w-65 h-60 bg-white m-3 flex flex-col p-5 rounded-xl">
+        <div>
+          <img class="image w-full h-36 object-cover rounded-lg" src="Assets/Burger.png" alt="">
+          <h3 class="name mt-2 text-lg font-bold">Big Mac</h3>
+        </div>
+        <div class="flex justify-between mt-3 items-center">
+          <h3 class="price text-green-600 font-semibold">$25</h3>
+          <i class="add_btn fa-solid fa-cart-plus text-xl cursor-pointer text-amber-600"></i>
+        </div>
+      </div>
+
+      <div class="Add_Cart w-full sm:w-65 h-60 bg-white m-3 flex flex-col p-5 rounded-xl">
+        <div>
+          <img class="image w-full h-36 object-cover rounded-lg" src="Assets/Burger.png" alt="">
+          <h3 class="name mt-2 text-lg font-bold">Turkey Burger</h3>
+        </div>
+        <div class="flex justify-between mt-3 items-center">
+          <h3 class="price text-green-600 font-semibold">$20</h3>
+          <i class="add_btn fa-solid fa-cart-plus text-xl cursor-pointer text-amber-600"></i>
+        </div>
+      </div>
+
+      <div class="Add_Cart w-full sm:w-65 h-60 bg-white m-3 flex flex-col p-5 rounded-xl">
+        <div>
+          <img class="image w-full h-36 object-cover rounded-lg" src="Assets/Burger.png" alt="">
+          <h3 class="name mt-2 text-lg font-bold">Black Bean Burger</h3>
+        </div>
+        <div class="flex justify-between mt-3 items-center">
+          <h3 class="price text-green-600 font-semibold">$20</h3>
+          <i class="add_btn fa-solid fa-cart-plus text-xl cursor-pointer text-amber-600"></i>
+        </div>
+      </div>
+      <div class="Add_Cart w-full sm:w-65 h-60 bg-white m-3 flex flex-col p-5 rounded-xl">
+        <div>
+          <img class="image w-full h-36 object-cover rounded-lg" src="Assets/Burger.png" alt="">
+          <h3 class="name mt-2 text-lg font-bold">Mighty Rodeo Beef</h3>
+        </div>
+        <div class="flex justify-between mt-3 items-center">
+          <h3 class="price text-green-600 font-semibold">$20</h3>
+          <i class="add_btn fa-solid fa-cart-plus text-xl cursor-pointer text-amber-600"></i>
+        </div>
+      </div>
+
+      <!-- Add more burger cards here -->
+
+    </section>
+
+    <!-- Orders Section -->
+    <section class="bg-gray-400 w-full lg:w-[30%] h-[75vh] rounded-xl p-5 shadow-md flex flex-col">
+
+      <!-- Title -->
+      <h4 class="font-bold text-black text-2xl mb-4">ORDER'S</h4>
+
+      <!-- Scrollable Order Items -->
+      <div class="Container flex-1 overflow-y-auto pr-1 space-y-3">
+        <!-- Order cards will be added here dynamically -->
+      </div>
+
+      <!-- Payment section pinned to bottom -->
+      <div class="Payment w-full bg-gray-600 p-5 rounded-xl mt-4 flex flex-col">
+        <div class="flex items-center justify-between text-white">
+          <h3 class="sub_Total font-semibold">Sub Total</h3>
+          <p class="sub_total_price">$0</p>
+        </div>
+        <div class="mt-2 flex items-center justify-between text-white">
+          <h3 class="Tax font-semibold">Tax (10%)</h3>
+          <p class="tax_price">$0</p>
+        </div>
+        <hr class="mt-7 text-white">
+        <div class="mt-2 flex items-center justify-between text-white">
+          <h3 class="font-semibold">Total</h3>
+          <p class="total_Price tax_price">$0</p>
+        </div>
+
+
+
+
+        <Button
+          class="paybutton mt-3 p-3 bg-amber-600 hover:bg-amber-500 text-white text-xl font-bold rounded-xl cursor-pointer">Pay
+          Now</Button>
+      </div>
+
+    </section>
+
+
+  </div>
+
+
+  <script src="script.js"></script>
+</body>
+
+</html>
