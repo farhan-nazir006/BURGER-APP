@@ -1,107 +1,129 @@
-//DOM
-let allCards = document.querySelectorAll(".Add_Cart");
-let cartBtn = document.querySelectorAll(".add_btn");
-let orderContainer = document.querySelector(".Container");
-let subTotal = document.getElementsByClassName('sub_total_price');
-let tax = document.getElementsByClassName('tax_price');
-let total = document.getElementsByClassName('total_Price');
-let payBtn = document.querySelector('.paybutton');
+// DOM Elements
+const cartBtn = document.querySelectorAll(".add_btn");
+const allCards = document.querySelectorAll(".Add_Cart");
+const orderContainer = document.querySelector(".Container");
+const subTotal = document.getElementsByClassName('sub_total_price');
+const tax = document.getElementsByClassName('tax_price');
+const total = document.getElementsByClassName('total_Price');
+const payBtn = document.querySelector('.paybutton');
 
+// Load existing names or start fresh
+let localBurgerNames = JSON.parse(localStorage.getItem("burgername")) || [];
 
+let subTotalPrice = 0;
+let taxPrice = 0;
+let totalPrice = 0;
 
-// Getting Values from HtmlCollection
-let subTotalPrice = parseFloat(subTotal[0].innerHTML.replace("$", ""));
-let taxPrice = parseFloat(tax[0].innerHTML.replace("$", ""));
-let totalPrice = parseFloat(total[0].innerHTML.replace("$", ""));
+// Function to add one order item
+function createOrderItem(burgerName, burgerPrice, burgerImage) {
+  let orderItem = document.createElement('div');
+  orderItem.classList.add("order-item");
+  orderItem.innerHTML = `
+    <div class="w-full bg-white rounded-xl h-25 flex items-center justify-between p-3 mb-3">
+      <div class="flex items-center gap-3">
+        <img class="w-24 h-20 object-cover rounded-md" src="${burgerImage}" alt="">
+        <div>
+          <h4 class="text-black font-medium">${burgerName}</h4>
+          <p class="burgerPrice text-sm text-gray-600">${burgerPrice}</p>
+        </div>
+      </div>
+      <i class="delete_btn text-3xl text-red-500 cursor-pointer fa-solid fa-delete-left"></i>
+    </div>`;
 
-// Listener for adding order items
-function addOrder() {
-  cartBtn.forEach(btn => {
+  orderContainer.appendChild(orderItem);
 
-    btn.addEventListener("click", (e) => {
-      let card = btn.closest(".Add_Cart");
-      let burgerName = card.querySelector(".name").innerHTML;
-      let burgerImage = card.querySelector(".image").src;
-      let burgerPrice = card.querySelector(".price").innerHTML;
+  // Price Calculation
+  let price = parseFloat(burgerPrice.replace("$", ""));
+  subTotalPrice += price;
+  taxPrice = subTotalPrice * 0.1;
+  totalPrice = subTotalPrice + taxPrice;
 
-      let orderItem = document.createElement('div');
-      orderItem.innerHTML = `<div class="order-item w-full bg-white rounded-xl h-25 flex items-center justify-between p-3 mb-3">
-          <div class="flex items-center gap-3">
-            <img class="w-24 h-20 object-cover rounded-md" src="${burgerImage}" alt="">
-            <div>
-              <h4 class="text-black font-medium">${burgerName}</h4>
-              <p class="burgerPrice text-sm text-gray-600">${burgerPrice}</p>
-            </div>
-          </div>
-          <i class="delete_btn text-3xl text-red-500 cursor-pointer fa-solid fa-delete-left"></i>
-        </div>`
-
-      orderContainer.appendChild(orderItem);
-
-      // Adding prices
-      let bPrice = parseFloat(burgerPrice.replace("$", ""));
-
-      // Seperating number value
-      subTotalPrice += bPrice;
-      taxPrice = subTotalPrice * 0.1;
-      totalPrice = subTotalPrice + taxPrice;
-
-      subTotal[0].innerHTML = `$${subTotalPrice}`;
-      tax[0].innerHTML = `$${taxPrice}`;
-      total[0].innerHTML = `$${totalPrice}`;
-    })
-  })
+  subTotal[0].innerHTML = `$${subTotalPrice.toFixed(2)}`;
+  tax[0].innerHTML = `$${taxPrice.toFixed(2)}`;
+  total[0].innerHTML = `$${totalPrice.toFixed(2)}`;
 }
 
-function deleteOrder() {
-  // Event Listener for deleting order items
-  orderContainer.addEventListener("click", (e) => {
 
-    if ((e.target.classList.contains('delete_btn'))) {     // .contains() return true or false 
-      const orderCard = e.target.closest('.order-item');
+// Add Order on Click
+cartBtn.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const card = btn.closest(".Add_Cart");
+    const burgerName = card.querySelector(".name").innerHTML;
+    const burgerImage = card.querySelector(".image").src;
+    const burgerPrice = card.querySelector(".price").innerHTML;
 
-      let orderPrice = orderCard.querySelector('.burgerPrice').innerHTML;
-      let orderCardPrice = parseFloat(orderPrice.replace("$", ""));
-      if (orderCard) {
-        orderCard.remove();
+    // Check if burger already exists in localStorage to prevent duplicates
+    if (!localBurgerNames.includes(burgerName)) {
+      localBurgerNames.push(burgerName);
+      localStorage.setItem("burgername", JSON.stringify(localBurgerNames));
+      createOrderItem(burgerName, burgerPrice, burgerImage);
+    }
+  });
+});
 
-        subTotalPrice -= orderCardPrice;
-        taxPrice = subTotalPrice * 0.1;
-        totalPrice = subTotalPrice + taxPrice;
 
-        subTotal[0].innerHTML = `$${subTotalPrice}`;
-        tax[0].innerHTML = `$${taxPrice}`;
-        total[0].innerHTML = `$${totalPrice}`;
+// Delete Order
+orderContainer.addEventListener("click", (e) => {
+  if (e.target.classList.contains('delete_btn')) {
+    const orderCard = e.target.closest('.order-item');
+    const name = orderCard.querySelector("h4").innerText;
+    const price = parseFloat(orderCard.querySelector('.burgerPrice').innerText.replace("$", ""));
+
+    // Remove from DOM
+    orderCard.remove();
+
+    // Update prices
+    subTotalPrice -= price;
+    taxPrice = subTotalPrice * 0.1;
+    totalPrice = subTotalPrice + taxPrice;
+
+    subTotal[0].innerHTML = `$${subTotalPrice.toFixed(2)}`;
+    tax[0].innerHTML = `$${taxPrice.toFixed(2)}`;
+    total[0].innerHTML = `$${totalPrice.toFixed(2)}`;
+
+    // Remove from localStorage
+    localBurgerNames = localBurgerNames.filter(item => item !== name);
+    localStorage.setItem("burgername", JSON.stringify(localBurgerNames));
+  }
+});
+
+
+// Pay Button Function
+payBtn.addEventListener("click", () => {
+  const hasOrders = orderContainer.querySelectorAll('.order-item').length > 0;
+  if (hasOrders) {
+    alert("ALL ORDER'S COMPLETED");
+
+    subTotalPrice = 0;
+    taxPrice = 0;
+    totalPrice = 0;
+
+    subTotal[0].innerHTML = "$0";
+    tax[0].innerHTML = "$0";
+    total[0].innerHTML = "$0";
+
+    orderContainer.innerHTML = "";
+    localBurgerNames = [];
+    localStorage.removeItem("burgername");
+  } else {
+    alert("THERE IS NO ORDER IN QUEUE");
+  }
+});
+
+
+// Restore Orders on Refresh
+function restoreOrders() {
+  localBurgerNames.forEach(name => {
+    allCards.forEach(card => {
+      const burgerName = card.querySelector(".name").innerHTML;
+      if (burgerName === name) {
+        const burgerImage = card.querySelector(".image").src;
+        const burgerPrice = card.querySelector(".price").innerHTML;
+        createOrderItem(burgerName, burgerPrice, burgerImage);
       }
-    }
-  })
+    });
+  });
 }
 
-function payAmount() {
-  payBtn.addEventListener("click", () => {
-    const hasOrders = orderContainer.querySelectorAll('.order-item').length > 0;
-    if (hasOrders) {
-      alert("ALL ORER'S COMPLETED ")
-      subTotal[0].innerHTML = `$0`;
-      tax[0].innerHTML = `$0`;
-      total[0].innerHTML = `$0`;
-      orderContainer.innerHTML = ' ';
-    } else {
-      alert("THERE IS NO ORDER IN QUEUE");
-    }
-
-  })
-}
-
-
-addOrder();
-deleteOrder();
-payAmount();
-
-
-
-
-
-
-
-
+// Run restore on page load
+restoreOrders();
