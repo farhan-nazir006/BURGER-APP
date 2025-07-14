@@ -25,7 +25,7 @@ function addOrder() {
       let burgerPrice = card.querySelector(".price").innerHTML;
 
       let orderItem = document.createElement('div');
-      orderItem.innerHTML = ` <div class="order-item w-full bg-white rounded-xl h-25 flex items-center justify-between p-3 mb-3">
+      orderItem.innerHTML = `<div class="order-item w-full bg-white rounded-xl h-25 flex items-center justify-between p-3 mb-3">
           <div class="flex items-center gap-3">
             <img class="w-24 h-20 object-cover rounded-md" src="${burgerImage}" alt="">
             <div>
@@ -35,8 +35,6 @@ function addOrder() {
           </div>
           <i class="delete_btn text-3xl text-red-500 cursor-pointer fa-solid fa-delete-left"></i>
         </div>`
-
-
 
       orderContainer.appendChild(orderItem);
 
